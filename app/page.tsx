@@ -44,8 +44,8 @@ export default function FarewellWebsite() {
     setIsVisible(true);
     // Trigger confetti on load
     setTimeout(() => createConfetti(), 500);
-    // Trigger more confetti every 3 seconds
-    const interval = setInterval(() => createConfetti(), 4000);
+    // Trigger more confetti every 4 seconds
+    const confettiInterval = setInterval(() => createConfetti(), 4000);
     
     // Map the actual photos from the public folder
     const photoList = [
@@ -58,7 +58,15 @@ export default function FarewellWebsite() {
     ];
     setPhotos(photoList);
     
-    return () => clearInterval(interval);
+    // Auto-rotate photos every 5 seconds
+    const photoInterval = setInterval(() => {
+      setCurrentPhoto((prev) => (prev + 1) % photoList.length);
+    }, 5000);
+    
+    return () => {
+      clearInterval(confettiInterval);
+      clearInterval(photoInterval);
+    };
   }, []);
 
   const nextPhoto = () => {
